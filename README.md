@@ -6,4 +6,6 @@ This example has not been completely worked out with remote control. It is only 
 
 ![CPG swimming gait](figures/animation.gif  "Animation")
 
+# RoSpider
+
 The updates made to this repository include changes required to fit the CPG developed for RoFish to a quadruped spider robot.
