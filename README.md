@@ -6,5 +6,4 @@ This example has not been completely worked out with remote control. It is only 
 
 ![CPG swimming gait](figures/animation.gif  "Animation")
 
-
-The used type of RC-servo motor for joints 1 and 2, is the Futaba S3003. The tail motor is a Futaba S3102.
+The updates made to this repository include changes required to fit the CPG developed for RoFish to a quadruped spider robot.
