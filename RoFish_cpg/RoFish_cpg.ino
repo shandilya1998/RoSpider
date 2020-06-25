@@ -77,6 +77,11 @@ float sr_dd=0;
 float sx_dd=0;
 float out_deg[N]={0,0,0,0}; // output phase time vector
 
+float out0;
+float out1;
+float out2;
+float out3;
+
 Servo servo1;
 Servo servo2;
 Servo servo3;
@@ -86,7 +91,7 @@ Servo servo4;
 void setup()
 {
 	pinMode(LED_PIN, OUTPUT); // for checking loop period time and loop execution time (signal high time)
-	Serial.begin(115200);
+	Serial.begin(9600);
 	servo1.attach(SERVO1_PIN);
 	servo2.attach(SERVO2_PIN);
 	servo3.attach(SERVO3_PIN);
@@ -117,9 +122,9 @@ void setup()
 
 	// forward swimming, 1/s phase biases
 	f[1][1] = 0.0;
-	f[1][2] = -0.7;
-	f[1][3] = -1.41;
-  f[1][4] = -0.7;
+	f[1][2] = 0.0;
+	f[1][3] = 0.0;
+  f[1][4] = 0.0;
 	f[2][1] = -f[1][2];
 	f[2][2] = 0.0;
 	f[2][3] = f[1][3] - f[1][2];
@@ -135,21 +140,21 @@ void setup()
 
 	// backward swimming, 1/s phase biases
 	b[1][1] = 0.0;
-    b[1][2] = 0.7;
-    b[1][3] = 1.41;
-    b[1][4] = 0.7;
-    b[2][1] = -b[1][2];
-    b[2][2] = 0.0;
-    b[2][3] = b[1][3] - b[1][2];
-    b[2][4] = b[1][4] - b[1][2];
-    b[3][1] = -b[1][3];
-    b[3][2] = -b[2][3];
-    b[3][3] = 0.0;
-    b[3][4] = b[1][3] - b[1][4];
-    b[4][1] = -b[1][4];
-    b[4][2] = -b[2][4];
-    b[3][4] = -b[4][3];
-    b[4][4] = 0.0;
+  b[1][2] = 0.7;
+  b[1][3] = 1.41;
+  b[1][4] = -0.7;
+  b[2][1] = -b[1][2];
+  b[2][2] = 0.0;
+  b[2][3] = b[1][3] - b[1][2];
+  b[2][4] = b[1][4] - b[1][2];
+  b[3][1] = -b[1][3];
+  b[3][2] = -b[2][3];
+  b[3][3] = 0.0;
+  b[3][4] = b[1][3] - b[1][4];
+  b[4][1] = -b[1][4];
+  b[4][2] = -b[2][4];
+  b[3][4] = -b[4][3];
+  b[4][4] = 0.0;
 
 	nextLoop = micros() + LPERIOD; // Set the loop timer variable.
 }
@@ -195,12 +200,23 @@ for(i=0; i<N; i++){
 	out_deg[i] = 360.0 * ( sx[i] + sr[i] * sin(sA[i]) )/(2*PI);
 	}
 
-//Serial.println(out_deg[3]);
-servo1.write( 90 + round(out_deg[0]) );
-servo2.write( 90 + round(out_deg[1]) );
-servo3.write( 90 + round(out_deg[2]) );
-servo4.write( 90 + round(out_deg[3]) );
 
+//servo1.write( 90 + round(out_deg[0]) );
+//servo2.write( 90 + round(out_deg[1]) );
+//servo3.write( 90 + round(out_deg[2]) );
+//servo4.write( 90 + round(out_deg[3]) );
+out0 = 90 + out_deg[0];
+out1 = 90 + out_deg[1];
+out2 = 90 + out_deg[2];
+out3 = 90 + out_deg[3];
+
+Serial.print(out0);
+Serial.print("\t");
+Serial.print(out1);
+Serial.print("\t");
+Serial.print(out2);
+Serial.print("\t");
+Serial.println(out3);
 digitalWrite(LED_PIN, false); //loop execution time, about 2ms.
 
 
