@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm 
-
+"""
+    https://www.researchgate.net/publication/260634709_Salamandra_Robotica_II_An_Amphibious_Robot_to_Study_Salamander-Like_Swimming_and_Walking_Gaits
+    Refer to the above paper for more information about the kuramoto oscillator    
+"""
 class Kuramoto(object):
     def __init__(self,
                  num,
@@ -124,70 +127,55 @@ class Kuramoto(object):
     
     def plot_phase(self):
         #print(self.Aphase.shape)
+        labels = []
         fig, axes = plt.subplots(1, 2, figsize=(20, 10))  
         for i in range(self.num):
             axes[0].plot(self.t[-1000:], self.Aphase[i, -1000:])
             axes[1].plot(self.t[:1000], self.Aphase[i, :1000])
-        axes[0].legend(loc=2)
-        axes[1].legend(loc=2)
+            labels.append('neuron_'+str(i))
+        axes[0].legend(labels, loc = 'upper left')
+        axes[1].legend(labels, loc = 'upper left')
         fig.savefig('figures/phase_'+str(self.exp_num)+'.png')
     
     def plot_amplitude(self):
         #print(self.Aphase.shape)
+        labels = []
         fig, axes = plt.subplots(1, 2, figsize=(20, 10))
         for i in range(self.num):
             axes[0].plot(self.t[-1000:], self.Aamplitude[i, -1000:])
             axes[1].plot(self.t[:1000], self.Aamplitude[i, :1000])
-        colormap = plt.cm.gist_ncar #nipy_spectral, Set1,Paired   
-        colors = [colormap(i) for i in np.linspace(0, 1,len(axes[0].lines))]
-        for i,j in enumerate(axes[0].lines):
-            j.set_color(colors[i])
-        axes[0].legend(loc=2)
-        colormap = plt.cm.gist_ncar #nipy_spectral, Set1,Paired   
-        colors = [colormap(i) for i in np.linspace(0, 1,len(axes[1].lines))]
-        for i,j in enumerate(axes[1].lines):
-            j.set_color(colors[i])
-        axes[1].legend(loc=2)
+            labels.append('neuron_'+str(i))
+        axes[0].legend(labels, loc = 'upper left')
+        axes[1].legend(labels, loc = 'upper left')
         fig.savefig('figures/amplitude_'+str(self.exp_num)+'.png')
     
     def plot_offset(self):
         #print(self.Aphase.shape)
+        labels = []
         fig, axes = plt.subplots(1, 2, figsize=(20, 10))
         for i in range(self.num):
             axes[0].plot(self.t[-1000:], self.Aoffset[i, -1000:])
             axes[1].plot(self.t[:1000], self.Aoffset[i, :1000])
-        colormap = plt.cm.gist_ncar #nipy_spectral, Set1,Paired   
-        colors = [colormap(i) for i in np.linspace(0, 1,len(axes[0].lines))]
-        for i,j in enumerate(axes[0].lines):
-            j.set_color(colors[i])
-        axes[0].legend(loc=2)
-        colormap = plt.cm.gist_ncar #nipy_spectral, Set1,Paired   
-        colors = [colormap(i) for i in np.linspace(0, 1,len(axes[1].lines))]
-        for i,j in enumerate(axes[1].lines):
-            j.set_color(colors[i])
-        axes[1].legend(loc=2)
+            labels.append('neurons_'+str(i))
+        axes[0].legend(labels, loc = 'upper left')
+        axes[1].legend(labels, loc = 'upper left')
         fig.savefig('figures/offset_'+str(self.exp_num)+'.png')
     
     def plot_ja(self):
         #print(self.Aphase.shape)
+        labels = []
         fig, axes = plt.subplots(1, 2, figsize=(20, 10))
         for i in range(self.num):
             axes[0].plot(self.t[-1000:], self.out_degree[i, -1000:])
             axes[1].plot(self.t[:1000], self.out_degree[i, :1000])
-        colormap = plt.cm.gist_ncar #nipy_spectral, Set1,Paired   
-        colors = [colormap(i) for i in np.linspace(0, 1,len(axes[0].lines))]
-        for i,j in enumerate(axes[0].lines):
-            j.set_color(colors[i])
-        axes[0].legend(loc=2)
-        colormap = plt.cm.gist_ncar #nipy_spectral, Set1,Paired   
-        colors = [colormap(i) for i in np.linspace(0, 1,len(axes[1].lines))]
-        for i,j in enumerate(axes[1].lines):
-            j.set_color(colors[i])
-        axes[1].legend(loc=2)
+            labels.append('neuron_'+str(i))
+        axes[0].legend(labels, loc = 'upper left')
+        axes[1].legend(labels, loc = 'upper left')
         fig.savefig('figures/ja_'+str(self.exp_num)+'.png')
     
     def compute_joint_angles(self): 
         self.ja = 360.0 * ( self.offset + self.amplitude[i] * np.sin(self.phase) )/(2*np.pi)
+pi = np.pi
 num = 4
 omega = np.array([np.pi, np.pi, np.pi, np.pi]) # np.array([np.pi, np.pi/2, np.pi, np.pi/2]) #np.full((4,), np.pi)
 amplitude = np.array([np.pi, np.pi, np.pi, np.pi]) #np.full((4,), np.pi/2)
@@ -205,15 +193,15 @@ for i in range(int(num)):
             phase_diff[j][i] = -np.pi/2
 """
 # Setting phase differences for experiment 2
-phase_diff[0][1] = np.pi/2
-phase_diff[0][2] = 0
-phase_diff[0][3] = 0
+phase_diff[0][1] = pi/6
+phase_diff[0][2] = pi/3
+phase_diff[0][3] = 2*pi/3
 phase_diff[1][0] = -phase_diff[0][1]
 phase_diff[1][2] = phase_diff[0][2] - phase_diff[0][1]
 phase_diff[1][3] = phase_diff[0][3] - phase_diff[0][1]
 phase_diff[2][0] = -phase_diff[0][2]
 phase_diff[2][1] = -phase_diff[1][2]
-phase_diff[2][3] = phase_diff[0][3] + phase_diff[0][2]
+phase_diff[2][3] = phase_diff[0][3] - phase_diff[0][2]
 phase_diff[3][0] = -phase_diff[0][3]
 phase_diff[3][1] = -phase_diff[1][3]
 phase_diff[3][2] = -phase_diff[2][3]
@@ -225,7 +213,7 @@ cpg = Kuramoto(num = num,
                phase_diff = phase_diff,
                weights = weights,
                iterations = 1000000,
-               exp_num = 3)
+               exp_num = 4)
 cpg.simulate()
 cpg.plot_phase()
 cpg.plot_amplitude()
